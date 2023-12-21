@@ -30,9 +30,9 @@ public class BudgetService
         var currentMonth = startDate;
 
         var totalAmount = 0m;
+        var budgets = budgetRepository.GetAll();
         while (currentMonth < new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1))
         {
-            var budgets = budgetRepository.GetAll();
             var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
             if (budget != null)
             {
