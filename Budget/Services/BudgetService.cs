@@ -16,6 +16,13 @@ public class Period
 
     public DateTime End { get; private set; }
     public DateTime Start { get; private set; }
+
+    public int GetOverlappingDays(Models.Budget budget)
+    {
+        var overlappingEnd = budget.LastDay() < End ? budget.LastDay() : End;
+        var overlappingStart = budget.FirstDay() > Start ? budget.FirstDay() : Start;
+        return (overlappingEnd - overlappingStart).Days + 1;
+    }
 }
 
 public class BudgetService
@@ -43,7 +50,7 @@ public class BudgetService
             var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
             if (budget != null)
             {
-                var overlappingDays = GetOverlappingDays(new Period(start, end), budget);
+                var overlappingDays = new Period(start, end).GetOverlappingDays(budget);
                 totalAmount += budget.GetDailyAmount() * overlappingDays;
             }
 
@@ -51,12 +58,5 @@ public class BudgetService
         }
 
         return totalAmount;
-    }
-
-    private static int GetOverlappingDays(Period period, Models.Budget budget)
-    {
-        var overlappingEnd = budget.LastDay() < period.End ? budget.LastDay() : period.End;
-        var overlappingStart = budget.FirstDay() > period.Start ? budget.FirstDay() : period.Start;
-        return (overlappingEnd - overlappingStart).Days + 1;
     }
 }
