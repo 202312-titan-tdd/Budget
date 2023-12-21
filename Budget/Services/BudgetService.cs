@@ -46,15 +46,18 @@ public class BudgetService
         var totalAmount = 0m;
         var budgets = budgetRepository.GetAll();
         var period = new Period(start, end);
-        while (currentMonth < new DateTime(end.Year, end.Month, 1).AddMonths(1))
+        foreach (var budget in budgets)
         {
-            var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
-            if (budget != null)
-            {
-                totalAmount += budget.GetOverlappingAmount(period);
-            }
-
-            currentMonth = currentMonth.AddMonths(1);
+            // }
+            // while (currentMonth < new DateTime(end.Year, end.Month, 1).AddMonths(1))
+            // {
+            //     var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
+            //     if (budget != null)
+            //     {
+            totalAmount += budget.GetOverlappingAmount(period);
+            // }
+            //
+            // currentMonth = currentMonth.AddMonths(1);
         }
 
         return totalAmount;
