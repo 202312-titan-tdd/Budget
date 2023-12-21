@@ -1,5 +1,8 @@
-﻿using System.Runtime.CompilerServices;
+﻿#region
+
 using Budget.Repositories;
+
+#endregion
 
 namespace Budget.Services;
 
@@ -19,8 +22,8 @@ public class BudgetService
             return 0;
         }
 
-        var budgetPeriod = GetBudgetPeriod(start, end);
         var budgets = budgetRepository.GetAll();
+        var budgetPeriod = GetBudgetPeriod(start, end);
 
         return budgets
                .Join(
@@ -35,7 +38,7 @@ public class BudgetService
                .Sum(monthAmount => monthAmount);
     }
 
-    public Dictionary<DateTime, int> GetBudgetPeriod(DateTime startDate, DateTime endDate)
+    private Dictionary<DateTime, int> GetBudgetPeriod(DateTime startDate, DateTime endDate)
     {
         var period = new Dictionary<DateTime, int>();
         var currentMonth = startDate;
