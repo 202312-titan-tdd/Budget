@@ -28,7 +28,9 @@ public class BudgetService
 
     private static int GetDailyAmount(Models.Budget budget, DateTime currentMonth)
     {
-        var dailyAmount = budget.Amount / DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
+        var firstDayOfBudget = DateTime.ParseExact(budget.YearMonth, "yyyyMM", null);
+        var dailyAmount = budget.Amount / DateTime.DaysInMonth(firstDayOfBudget.Year, firstDayOfBudget.Month);
+        // var dailyAmount = budget.Amount / DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
         return dailyAmount;
     }
 
