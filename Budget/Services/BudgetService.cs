@@ -20,10 +20,8 @@ public class Period
     public int GetOverlappingDays(Models.Budget budget)
     {
         var another = new Period(budget.FirstDay(), budget.LastDay());
-        var firstDay = another.Start;
-        var lastDay = another.End;
-        var overlappingEnd = lastDay < End ? lastDay : End;
-        var overlappingStart = firstDay > Start ? firstDay : Start;
+        var overlappingEnd = another.End < End ? another.End : End;
+        var overlappingStart = another.Start > Start ? another.Start : Start;
         return (overlappingEnd - overlappingStart).Days + 1;
     }
 }
