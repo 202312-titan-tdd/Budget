@@ -22,22 +22,17 @@ public class BudgetService
             return 0;
         }
 
-        return GetTotalAmount(start, end);
-    }
-
-    private decimal GetTotalAmount(DateTime startDate, DateTime endDate)
-    {
-        var currentMonth = startDate;
+        var currentMonth = start;
 
         var totalAmount = 0m;
         var budgets = budgetRepository.GetAll();
-        while (currentMonth < new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1))
+        while (currentMonth < new DateTime(end.Year, end.Month, 1).AddMonths(1))
         {
             var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
             if (budget != null)
             {
-                var endOfPeriod = budget.LastDay() < endDate ? budget.LastDay() : endDate;
-                var startOfPeriod = budget.FirstDay() > startDate ? budget.FirstDay() : startDate;
+                var endOfPeriod = budget.LastDay() < end ? budget.LastDay() : end;
+                var startOfPeriod = budget.FirstDay() > start ? budget.FirstDay() : start;
                 var overlappingDays = (endOfPeriod - startOfPeriod).Days + 1;
                 totalAmount += budget.GetDailyAmount() * overlappingDays;
             }
