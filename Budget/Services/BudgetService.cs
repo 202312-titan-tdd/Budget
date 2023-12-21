@@ -41,23 +41,12 @@ public class BudgetService
             return 0;
         }
 
-        var currentMonth = start;
-
         var totalAmount = 0m;
         var budgets = budgetRepository.GetAll();
         var period = new Period(start, end);
         foreach (var budget in budgets)
         {
-            // }
-            // while (currentMonth < new DateTime(end.Year, end.Month, 1).AddMonths(1))
-            // {
-            //     var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
-            //     if (budget != null)
-            //     {
             totalAmount += budget.GetOverlappingAmount(period);
-            // }
-            //
-            // currentMonth = currentMonth.AddMonths(1);
         }
 
         return totalAmount;
