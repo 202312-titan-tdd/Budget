@@ -13,9 +13,9 @@ public class Budget
         return firstDayOfBudget;
     }
 
-    public int GetDailyAmount()
+    public decimal GetDailyAmount()
     {
-        return Amount / DaysInMonth();
+        return (decimal)Amount / DaysInMonth();
     }
 
     private int DaysInMonth()
@@ -33,7 +33,7 @@ public class Budget
         return new Period(FirstDay(), LastDay());
     }
 
-    public int GetOverlappingAmount(Period period)
+    public decimal GetOverlappingAmount(Period period)
     {
         return GetDailyAmount() * period.GetOverlappingDays(CreatePeriod());
     }
