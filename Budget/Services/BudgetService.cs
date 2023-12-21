@@ -32,7 +32,8 @@ public class BudgetService
         var totalAmount = 0m;
         while (currentMonth < new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1))
         {
-            var budget = budgetRepository.GetAll().SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
+            var budgets = budgetRepository.GetAll();
+            var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
             if (budget != null)
             {
                 var endOfPeriod = budget.LastDay() < endDate ? budget.LastDay() : endDate;
