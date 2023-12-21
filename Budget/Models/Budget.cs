@@ -1,21 +1,24 @@
-﻿using Budget.Services;
+﻿#region
+
+using Budget.Services;
+
+#endregion
 
 namespace Budget.Models;
 
 public class Budget
 {
     public int Amount { get; set; }
-    public string YearMonth { get; set; }
+    public string YearMonth { get; set; } = null!;
 
-    public DateTime FirstDay()
+    public decimal GetOverlappingAmount(Period period)
     {
-        var firstDayOfBudget = DateTime.ParseExact(YearMonth, "yyyyMM", null);
-        return firstDayOfBudget;
+        return GetDailyAmount() * period.GetOverlappingDays(CreatePeriod());
     }
 
-    public decimal GetDailyAmount()
+    private Period CreatePeriod()
     {
-        return (decimal)Amount / DaysInMonth();
+        return new Period(FirstDay(), LastDay());
     }
 
     private int DaysInMonth()
@@ -23,18 +26,19 @@ public class Budget
         return DateTime.DaysInMonth(FirstDay().Year, FirstDay().Month);
     }
 
-    public DateTime LastDay()
+    private DateTime FirstDay()
+    {
+        var firstDayOfBudget = DateTime.ParseExact(YearMonth, "yyyyMM", null);
+        return firstDayOfBudget;
+    }
+
+    private decimal GetDailyAmount()
+    {
+        return (decimal)Amount / DaysInMonth();
+    }
+
+    private DateTime LastDay()
     {
         return DateTime.ParseExact(YearMonth + DaysInMonth(), "yyyyMMdd", null);
-    }
-
-    public Period CreatePeriod()
-    {
-        return new Period(FirstDay(), LastDay());
-    }
-
-    public decimal GetOverlappingAmount(Period period)
-    {
-        return GetDailyAmount() * period.GetOverlappingDays(CreatePeriod());
     }
 }
