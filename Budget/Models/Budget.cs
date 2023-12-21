@@ -32,4 +32,9 @@ public class Budget
     {
         return new Period(FirstDay(), LastDay());
     }
+
+    public int GetOverlappingAmount(Period period)
+    {
+        return GetDailyAmount() * period.GetOverlappingDays(CreatePeriod());
+    }
 }
