@@ -43,9 +43,8 @@ public class BudgetService
 
     private static int GetOverlappingDays(DateTime start, DateTime end, Models.Budget budget)
     {
-        var endOfPeriod = budget.LastDay() < end ? budget.LastDay() : end;
-        var startOfPeriod = budget.FirstDay() > start ? budget.FirstDay() : start;
-        var overlappingDays = (endOfPeriod - startOfPeriod).Days + 1;
-        return overlappingDays;
+        var overlappingEnd = budget.LastDay() < end ? budget.LastDay() : end;
+        var overlappingStart = budget.FirstDay() > start ? budget.FirstDay() : start;
+        return (overlappingEnd - overlappingStart).Days + 1;
     }
 }
