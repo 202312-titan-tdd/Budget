@@ -8,8 +8,8 @@ public class Period
         End = end;
     }
 
-    public DateTime End { get; private set; }
-    public DateTime Start { get; private set; }
+    private DateTime End { get; set; }
+    private DateTime Start { get; set; }
 
     public int GetOverlappingDays(Period another)
     {
