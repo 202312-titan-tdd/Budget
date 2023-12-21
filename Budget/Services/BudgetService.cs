@@ -36,9 +36,10 @@ public class BudgetService
             var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
             if (budget != null)
             {
-                var endOfMonth = new DateTime(
-                    currentMonth.Year, currentMonth.Month,
-                    DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month));
+                var endOfMonth = budget.LastDay();
+                // var endOfMonth = new DateTime(
+                //     currentMonth.Year, currentMonth.Month,
+                //     DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month));
                 var endOfPeriod = (endOfMonth < endDate) ? endOfMonth : endDate;
                 var startOfPeriod = budget.FirstDay() > startDate ? budget.FirstDay() : startDate;
                 var daysInMonth = (endOfPeriod - startOfPeriod).Days + 1;
