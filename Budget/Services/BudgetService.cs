@@ -31,7 +31,8 @@ public class BudgetService
         var currentMonth = startDate;
 
         var totalAmount = 0m;
-        while (currentMonth <= endDate)
+        while (currentMonth < new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1))
+            // while (currentMonth <= endDate)
         {
             var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
             if (budget != null)
@@ -40,12 +41,15 @@ public class BudgetService
                     currentMonth.Year, currentMonth.Month,
                     DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month));
                 var endOfPeriod = (endOfMonth < endDate) ? endOfMonth : endDate;
-                var daysInMonth = (endOfPeriod - currentMonth).Days + 1;
+                var startOfPeriod = budget.FirstDay() > startDate ? budget.FirstDay() : startDate;
+                var daysInMonth = (endOfPeriod - startOfPeriod).Days + 1;
+                // var daysInMonth = (endOfPeriod - currentMonth).Days + 1;
                 totalAmount += budget.GetDailyAmount() * daysInMonth;
             }
 
-            var nextMonth = currentMonth.AddMonths(1);
-            currentMonth = new DateTime(nextMonth.Year, nextMonth.Month, 1);
+            currentMonth = currentMonth.AddMonths(1);
+            // var nextMonth = currentMonth.AddMonths(1);
+            // currentMonth = new DateTime(nextMonth.Year, nextMonth.Month, 1);
         }
 
         return totalAmount;

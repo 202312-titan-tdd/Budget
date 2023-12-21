@@ -2,8 +2,14 @@
 
 public class Budget
 {
-    public string YearMonth { get; set; }
     public int Amount { get; set; }
+    public string YearMonth { get; set; }
+
+    public DateTime FirstDay()
+    {
+        var firstDayOfBudget = DateTime.ParseExact(YearMonth, "yyyyMM", null);
+        return firstDayOfBudget;
+    }
 
     public int GetDailyAmount()
     {
