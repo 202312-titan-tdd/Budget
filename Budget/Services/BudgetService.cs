@@ -28,7 +28,7 @@ public class BudgetService
 
     private decimal GetTotalAmount(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
     {
-        var period = new Dictionary<DateTime, int>();
+        // var period = new Dictionary<DateTime, int>();
         var currentMonth = startDate;
 
         var totalAmount = 0m;
@@ -39,7 +39,7 @@ public class BudgetService
                 DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month));
             var endOfPeriod = (endOfMonth < endDate) ? endOfMonth : endDate;
             var daysInMonth = (endOfPeriod - currentMonth).Days + 1;
-            period.Add(currentMonth, daysInMonth);
+            // period.Add(currentMonth, daysInMonth);
             var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
             if (budget != null)
             {
