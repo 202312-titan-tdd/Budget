@@ -38,8 +38,8 @@ public class BudgetService
             {
                 var endOfPeriod = budget.LastDay() < endDate ? budget.LastDay() : endDate;
                 var startOfPeriod = budget.FirstDay() > startDate ? budget.FirstDay() : startDate;
-                var daysInMonth = (endOfPeriod - startOfPeriod).Days + 1;
-                totalAmount += budget.GetDailyAmount() * daysInMonth;
+                var overlappingDays = (endOfPeriod - startOfPeriod).Days + 1;
+                totalAmount += budget.GetDailyAmount() * overlappingDays;
             }
 
             currentMonth = currentMonth.AddMonths(1);
