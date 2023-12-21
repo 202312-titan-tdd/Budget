@@ -23,22 +23,25 @@ public class BudgetService
         }
 
         var budgets = budgetRepository.GetAll();
-        var budgetPeriod = GetBudgetPeriod(start, end, budgets);
+        var totalAmount = GetBudgetPeriod(start, end, budgets);
+        return totalAmount;
+        // var budgetPeriod = GetBudgetPeriod(start, end, budgets);
 
-        return budgets
-               .Join(
-                   budgetPeriod,
-                   budget => budget.YearMonth,
-                   period => period.Key.ToString("yyyyMM"),
-                   (budget, period) =>
-                   {
-                       var singleDayAmount = budget.Amount / DateTime.DaysInMonth(period.Key.Year, period.Key.Month);
-                       return singleDayAmount * period.Value;
-                   })
-               .Sum(monthAmount => monthAmount);
+        // return budgets
+        //        .Join(
+        //            budgetPeriod,
+        //            budget => budget.YearMonth,
+        //            period => period.Key.ToString("yyyyMM"),
+        //            (budget, period) =>
+        //            {
+        //                var singleDayAmount = budget.Amount / DateTime.DaysInMonth(period.Key.Year, period.Key.Month);
+        //                return singleDayAmount * period.Value;
+        //            })
+        //        .Sum(monthAmount => monthAmount);
     }
 
-    private Dictionary<DateTime, int> GetBudgetPeriod(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
+    // private Dictionary<DateTime, int> GetBudgetPeriod(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
+    private decimal GetBudgetPeriod(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
     {
         var period = new Dictionary<DateTime, int>();
         var currentMonth = startDate;
@@ -54,6 +57,7 @@ public class BudgetService
         //                return singleDayAmount * period.Value;
         //            })
         //        .Sum(monthAmount => monthAmount);
+        var totalAmount = 0m;
         while (currentMonth <= endDate)
         {
             var endOfMonth = new DateTime(
@@ -62,10 +66,18 @@ public class BudgetService
             var endOfPeriod = (endOfMonth < endDate) ? endOfMonth : endDate;
             var daysInMonth = (endOfPeriod - currentMonth).Days + 1;
             period.Add(currentMonth, daysInMonth);
+            var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
+            if (budget != null)
+            {
+                var singleDayAmount = budget.Amount / DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
+                totalAmount += singleDayAmount * daysInMonth;
+            }
+
             var nextMonth = currentMonth.AddMonths(1);
             currentMonth = new DateTime(nextMonth.Year, nextMonth.Month, 1);
         }
 
-        return period;
+        return totalAmount;
+        // return period;
     }
 }
