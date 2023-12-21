@@ -41,8 +41,8 @@ public class BudgetService
                     DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month));
                 var endOfPeriod = (endOfMonth < endDate) ? endOfMonth : endDate;
                 var daysInMonth = (endOfPeriod - currentMonth).Days + 1;
-                var singleDayAmount = budget.Amount / DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
-                totalAmount += singleDayAmount * daysInMonth;
+                var dailyAmount = budget.Amount / DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
+                totalAmount += dailyAmount * daysInMonth;
             }
 
             var nextMonth = currentMonth.AddMonths(1);
