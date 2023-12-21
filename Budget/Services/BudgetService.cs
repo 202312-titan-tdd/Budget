@@ -23,25 +23,11 @@ public class BudgetService
         }
 
         var budgets = budgetRepository.GetAll();
-        var totalAmount = GetBudgetPeriod(start, end, budgets);
-        return totalAmount;
-        // var budgetPeriod = GetBudgetPeriod(start, end, budgets);
-
-        // return budgets
-        //        .Join(
-        //            budgetPeriod,
-        //            budget => budget.YearMonth,
-        //            period => period.Key.ToString("yyyyMM"),
-        //            (budget, period) =>
-        //            {
-        //                var singleDayAmount = budget.Amount / DateTime.DaysInMonth(period.Key.Year, period.Key.Month);
-        //                return singleDayAmount * period.Value;
-        //            })
-        //        .Sum(monthAmount => monthAmount);
+        return GetTotalAmount(start, end, budgets);
     }
 
     // private Dictionary<DateTime, int> GetBudgetPeriod(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
-    private decimal GetBudgetPeriod(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
+    private decimal GetTotalAmount(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
     {
         var period = new Dictionary<DateTime, int>();
         var currentMonth = startDate;
