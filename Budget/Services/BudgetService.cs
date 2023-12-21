@@ -26,12 +26,10 @@ public class BudgetService
         return GetTotalAmount(start, end, budgets);
     }
 
-    private static int GetDailyAmount(Models.Budget budget, DateTime currentMonth)
+    private static int GetDailyAmount(Models.Budget budget)
     {
         var firstDayOfBudget = DateTime.ParseExact(budget.YearMonth, "yyyyMM", null);
-        var dailyAmount = budget.Amount / DateTime.DaysInMonth(firstDayOfBudget.Year, firstDayOfBudget.Month);
-        // var dailyAmount = budget.Amount / DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
-        return dailyAmount;
+        return budget.Amount / DateTime.DaysInMonth(firstDayOfBudget.Year, firstDayOfBudget.Month);
     }
 
     private decimal GetTotalAmount(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
@@ -49,7 +47,7 @@ public class BudgetService
                     DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month));
                 var endOfPeriod = (endOfMonth < endDate) ? endOfMonth : endDate;
                 var daysInMonth = (endOfPeriod - currentMonth).Days + 1;
-                var dailyAmount = GetDailyAmount(budget, currentMonth);
+                var dailyAmount = GetDailyAmount(budget);
                 totalAmount += dailyAmount * daysInMonth;
             }
 
