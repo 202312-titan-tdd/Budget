@@ -22,17 +22,17 @@ public class BudgetService
             return 0;
         }
 
-        return GetTotalAmount(start, end, budgetRepository.GetAll());
+        return GetTotalAmount(start, end);
     }
 
-    private decimal GetTotalAmount(DateTime startDate, DateTime endDate, List<Models.Budget> budgets)
+    private decimal GetTotalAmount(DateTime startDate, DateTime endDate)
     {
         var currentMonth = startDate;
 
         var totalAmount = 0m;
         while (currentMonth < new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1))
         {
-            var budget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
+            var budget = budgetRepository.GetAll().SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
             if (budget != null)
             {
                 var endOfPeriod = budget.LastDay() < endDate ? budget.LastDay() : endDate;
